@@ -1,29 +1,16 @@
 pipeline {
     agent any
-
     stages {
-        stage('Clone Repository') {
+        stage('Install Dependencies') {
             steps {
                 script {
-                    // Clonar o repositório GitHub
-                    git branch: 'main', credentialsId: 'thiagolazzarotto', url: 'https://github.com/pedromorinel/postman-collection'
+                    sh 'npm install -g newman'
                 }
             }
         }
-    
-    stage('Debug') {
-    steps {
-        sh 'ls -la /var/jenkins/workspace/sandbox/sandbox-morinel-qa'
-    }
-}
-
-        
-        stage('Run Postman Tests') {
+        stage('Run Postman Collection') {
             steps {
-                script {
-                    // Executar os testes usando Docker e Newman
-                    sh 'docker run -v /var/jenkins/workspace/sandbox/sandbox-morinel-qa:/etc/newman --workdir /etc/newman -t postman/newman run /etc/newman/api.postman_collection.json --color off --disable-unicode'
-                }
+                sh 'newman run /etc/newman/api.postman_collection.json
             }
         }
     }
