@@ -6,7 +6,10 @@ pipeline {
             steps {
                 script {
                     def workspace = pwd()
-                    sh "docker run -v ${workspace}:/etc/newman --workdir /etc/newman -t postman/newman run api.postman_collection.json --color off --disable-unicode"
+                    def imageName = 'docker/dockerfile:latest'
+
+                   
+                    sh "docker run -v ${workspace}:/etc/newman --workdir /etc/newman -t ${docker/dockerfile:latest} run api.postman_collection.json --color off --disable-unicode"
                 }
             }
         }
