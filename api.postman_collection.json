@@ -1,0 +1,860 @@
+{
+	"info": {
+		"_postman_id": "a7a1e6e9-996e-41b8-9ecb-a0287858587d",
+		"name": "Teste goAwake api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28316546"
+	},
+	"item": [
+		{
+			"name": "cadastra empresa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verifica status\"), function() {\r",
+							"    pm.expect(pm.response.json().status).to.eql(1)\r",
+							"}\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"var id = responseJson.id;\r",
+							"\r",
+							"pm.globals.set(\"id_customer\", id);\r",
+							"\r",
+							"var responseJson2 = pm.response.json();\r",
+							"var name = responseJson.name;\r",
+							"\r",
+							"pm.globals.set(\"name_customer\", name);\r",
+							"\r",
+							"var responseJson3 = pm.response.json();\r",
+							"var cnpj = responseJson.cnpj;\r",
+							"\r",
+							"pm.globals.set(\"cnpj_customer\", cnpj);\r",
+							"\r",
+							"var responseJson4 = pm.response.json();\r",
+							"var address = responseJson.address;\r",
+							"\r",
+							"pm.globals.set(\"address_customer\", address);\r",
+							"\r",
+							"var responseJson5 = pm.response.json();\r",
+							"var integration = responseJson.address;\r",
+							"\r",
+							"pm.globals.set(\"integration_customer\", integration);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateRandomNumber() {\r",
+							"    const length = 14;\r",
+							"    let randomNumber = '';\r",
+							"    for (let i = 0; i < length; i++) {\r",
+							"        randomNumber += Math.floor(Math.random() * 10);\r",
+							"    }\r",
+							"    return randomNumber;\r",
+							"}\r",
+							"\r",
+							"const numeroAleatorio = generateRandomNumber();\r",
+							"\r",
+							"pm.environment.set('numeroAleatorio', numeroAleatorio);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwLm1vcmluZWwiLCJpc3MiOiJnb2F3YWtlLXBvcnRhbCIsImV4cCI6MTY4ODY5NjA1MjY4OSwidXNlciI6eyJpZCI6MzE1MSwiZnVsbE5hbWUiOiJQZWRybyBNb3JpbmVsIn19.G-9uTb_PDCZ4Eaekt2HxVDWdcbTqAEfGlBQjnADYfec",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"cnpj\": \"{{numeroAleatorio}}\",\r\n  \"address\": \"{{$randomStreetAddress}}\",\r\n  \"status\": 1,\r\n  \"configurations\": {\r\n    \"hasMonitoringCenter\": false\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/v2/customersProfile/",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"v2",
+						"customersProfile",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra filial matriz",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"var id = responseJson.id;\r",
+							"\r",
+							"pm.globals.set(\"id_customer_child\", id);\r",
+							"\r",
+							"var responseJson2 = pm.response.json();\r",
+							"var identification = responseJson.identification;\r",
+							"\r",
+							"pm.globals.set(\"identification_customer_child\", identification);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerProfileId\": {{id_customer}},\r\n  \"identification\": \"{{$randomCompanyName}}\",\r\n  \"name\": \"{{$randomCompanyName}}\",\r\n  \"parentId\": null,\r\n  \"status\": 1,\r\n  \"focus\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/customers",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra filial filho",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerProfileId\": {{id_customer}},\r\n  \"identification\": \"{{$randomCompanyName}}\",\r\n  \"name\": \"{{$randomCompanyName}}\",\r\n  \"parentId\": {{id_customer_child}},\r\n  \"status\": 1,\r\n  \"focus\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/customers",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra usuario",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwLm1vcmluZWwiLCJpc3MiOiJnb2F3YWtlLXBvcnRhbCIsImV4cCI6MTY4ODY5NjA1MjY4OSwidXNlciI6eyJpZCI6MzE1MSwiZnVsbE5hbWUiOiJQZWRybyBNb3JpbmVsIn19.G-9uTb_PDCZ4Eaekt2HxVDWdcbTqAEfGlBQjnADYfec",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"login\": \"{{$randomUserName}}\",\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"senha\": \"{{$randomPassword}}\",\r\n  \"status\": 1,\r\n  \"customerChild\": {{id_customer_child}},\r\n  \"customer\": {{id_customer}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/users/",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lista usuarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJson = pm.response.json();\r",
+							"var id = responseJson[0].id;\r",
+							"\r",
+							"pm.globals.set(\"id_usuario\", id);\r",
+							"\r",
+							"console.log (id)\r",
+							"\r",
+							"pm.test(\"Status 209\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api-qa.goawakecloud.com.br/api/users/customer-profile/{{id_customer}}",
+					"protocol": "https",
+					"host": [
+						"api-qa",
+						"goawakecloud",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"users",
+						"customer-profile",
+						"{{id_customer}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra regra de risco",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"active\": true,\r\n  \"alarmType\": 3,\r\n  \"customers_child_id\": [\r\n    {{id_customer_child}}\r\n  ],\r\n  \"defaultFocus\": false,\r\n  \"frequency\": \"1\",\r\n  \"gravity\": 1,\r\n  \"ownerUserId\": {{id_usuario}},\r\n  \"timeInMinutes\": \"30\",\r\n  \"intervalInMinutes\": \"15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-qa.goawakecloud.com.br/api/risk-rating",
+					"protocol": "https",
+					"host": [
+						"api-qa",
+						"goawakecloud",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"risk-rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra equipamento",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"var id = responseJson.id;\r",
+							"\r",
+							"pm.globals.set(\"id_equipment\", id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateRandomNumber() {\r",
+							"    const length = 15;\r",
+							"    let randomNumber = '';\r",
+							"    for (let i = 0; i < length; i++) {\r",
+							"        randomNumber += Math.floor(Math.random() * 10);\r",
+							"    }\r",
+							"    return randomNumber;\r",
+							"}\r",
+							"\r",
+							"const imeiAleatorio = generateRandomNumber();\r",
+							"\r",
+							"pm.environment.set('imeiAleatorio', imeiAleatorio);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"identification\": \"{{imeiAleatorio}}\",\r\n  \"name\": \"Câmera de Fadiga\",\r\n  \"attributes\": \"[{\\\"inputName\\\":\\\"version\\\"}]\",\r\n  \"equipmentTypeId\": 3,\r\n  \"status\": 1,\r\n  \"tested\": false,\r\n  \"dealerId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-qa.goawakecloud.com.br/api//v2/equipment/",
+					"protocol": "https",
+					"host": [
+						"api-qa",
+						"goawakecloud",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"",
+						"v2",
+						"equipment",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra tratativa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{$randomWord}}\",\r\n  \"customer_id\": {{id_customer}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/treatment",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"treatment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra veículo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"var id = responseJson[0].id;\r",
+							"\r",
+							"console.log(id)\r",
+							"\r",
+							"pm.globals.set(\"id_vehicle\", id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateRandomLicensePlate() {\r",
+							"    const letters = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\";\r",
+							"    const numbers = \"0123456789\";\r",
+							"    \r",
+							"    let plate = '';\r",
+							"    \r",
+							"    for (let i = 0; i < 3; i++) {\r",
+							"        const randomIndex = Math.floor(Math.random() * letters.length);\r",
+							"        plate += letters[randomIndex];\r",
+							"    }\r",
+							"    \r",
+							"    for (let i = 0; i < 4; i++) {\r",
+							"        const randomIndex = Math.floor(Math.random() * numbers.length);\r",
+							"        plate += numbers[randomIndex];\r",
+							"    }\r",
+							"    \r",
+							"    return plate;\r",
+							"}\r",
+							"\r",
+							"const placaAleatoria = generateRandomLicensePlate();\r",
+							"\r",
+							"function generateRandomNumber() {\r",
+							"    const length = 6;\r",
+							"    let randomNumber = '';\r",
+							"    for (let i = 0; i < length; i++) {\r",
+							"        randomNumber += Math.floor(Math.random() * 10);\r",
+							"    }\r",
+							"    return randomNumber;\r",
+							"}\r",
+							"\r",
+							"const numeroAleatorio = generateRandomNumber();\r",
+							"\r",
+							"pm.environment.set('placaAleatoria', placaAleatoria);\r",
+							"pm.environment.set('numeroAleatorio', numeroAleatorio);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  {\r\n    \"name\": \"{{placaAleatoria}}\",\r\n    \"identification\": \"{{numeroAleatorio}}\",\r\n    \"customerChildId\": {{id_customer_child}},\r\n    \"isValidPlate\": true\r\n  }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/v2/vehicle/",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"v2",
+						"vehicle",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cadastra motorista",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function generateRandomNumber() {\r",
+							"    const length = 11;\r",
+							"    let randomNumber = '';\r",
+							"    for (let i = 0; i < length; i++) {\r",
+							"        randomNumber += Math.floor(Math.random() * 10);\r",
+							"    }\r",
+							"    return randomNumber;\r",
+							"}\r",
+							"\r",
+							"const cnhAleatoria = generateRandomNumber();\r",
+							"\r",
+							"pm.environment.set('cnhAleatoria', cnhAleatoria);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"driverName\": \"{{$randomFullName}}\",\r\n  \"driverCutomerChildId\": \"{{id_customer_child}}\",\r\n  \"driverIdentification\": \"{{cnhAleatoria}}\",\r\n  \"userLogin\": \"\",\r\n  \"userStatus\": 1,\r\n  \"customerId\": {{id_customer}},\r\n  \"driverHeroLicence\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}//user-asset-link",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"",
+						"user-asset-link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "vincula imei ao asset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"assetId\": {{id_vehicle}},\r\n  \"tested\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{basicUrl}}/v2/equipment/{{id_equipment}}?acao=instalacao",
+					"host": [
+						"{{basicUrl}}"
+					],
+					"path": [
+						"",
+						"v2",
+						"equipment",
+						"{{id_equipment}}"
+					],
+					"query": [
+						{
+							"key": "acao",
+							"value": "instalacao"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "desvincula imei",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"comments\": \"Desinstalado\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-qa.goawakecloud.com.br/api//v2/equipment/{{id_equipment}}?acao=desinstalacao",
+					"protocol": "https",
+					"host": [
+						"api-qa",
+						"goawakecloud",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"",
+						"v2",
+						"equipment",
+						"{{id_equipment}}"
+					],
+					"query": [
+						{
+							"key": "acao",
+							"value": "desinstalacao"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inativa veiculo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{id_vehicle}},\r\n  \"name\": \"{{name_customer}}\",\r\n  \"customerId\": {{id_customer}},\r\n  \"identification\": \"{{numeroAleatorio}}\",\r\n  \"customerChildName\": \"{{identification_customer_child}}\",\r\n  \"active\": false,\r\n  \"hasFaceRecog\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-qa.goawakecloud.com.br/api//v2/vehicle/{{id_vehicle}}",
+					"protocol": "https",
+					"host": [
+						"api-qa",
+						"goawakecloud",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"",
+						"v2",
+						"vehicle",
+						"{{id_vehicle}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inativa empresa",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 201\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"{{id_customer}}\",\r\n  \"name\": \"{{name_customer}}\",\r\n  \"cnpj\": \"{{cnpj_customer}}\",\r\n  \"address\": \"{{address_customer}}\",\r\n  \"status\": 2,\r\n  \"integration\": \"{{integration_customer}}\",\r\n  \"hasFaceRecog\": false,\r\n  \"dealerName\": \"GoAwake\",\r\n  \"configurations\": {\r\n    \"hasMonitoringCenter\": false\r\n  }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api-qa.goawakecloud.com.br/api//v2/customersProfile/{{id_customer}}",
+					"protocol": "https",
+					"host": [
+						"api-qa",
+						"goawakecloud",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"",
+						"v2",
+						"customersProfile",
+						"{{id_customer}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwLm1vcmluZWwiLCJpc3MiOiJnb2F3YWtlLXBvcnRhbCIsImV4cCI6MTY4OTk4MzgyMDc4OCwidXNlciI6eyJpZCI6MzE1MSwiZnVsbE5hbWUiOiJQZWRybyBNb3JpbmVsIn19.q29_qu5fxRD1FnmPzd_KBiUktG8J18fYbxjuqbbpYKs",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "basicUrl",
+			"value": "https://api-qa.goawakecloud.com.br/api",
+			"type": "string"
+		}
+	]
+}
