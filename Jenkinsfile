@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // Executar os testes usando Docker e Newman
-                    sh 'docker run -v ${WORKSPACE}:/etc/newman --workdir /etc/newman -t postman/newman run api.postman_collection.json --color off --disable-unicode'
+                    sh 'docker run -v ${WORKSPACE}:/etc/newman --workdir /var/jenkins/workspace/sandbox/sandbox-morinel-qa -t postman/newman run api.postman_collection.json --color off --disable-unicode'
                 }
             }
         }
