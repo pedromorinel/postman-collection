@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Executar os testes usando Docker e Newman
-                    sh 'docker run -v /var/jenkins/workspace/sandbox/sandbox-morinel-qa:/etc/newman --workdir /etc/newman -t postman/newman run api.postman_collection.json --color off --disable-unicode'
+                    sh 'docker run -v /var/jenkins/workspace/sandbox/sandbox-morinel-qa:/etc/newman --workdir /etc/newman -t postman/newman run /etc/newman/api.postman_collection.json --color off --disable-unicode'
                 }
             }
         }
