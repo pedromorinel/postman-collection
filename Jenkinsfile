@@ -9,7 +9,7 @@ pipeline {
                     def imageName = 'docker/dockerfile:latest'
 
                    
-                    sh "docker run -v ${workspace}:/etc/newman --workdir /etc/newman -t ${docker/dockerfile:latest} run api.postman_collection.json --color off --disable-unicode"
+                    sh "docker run -v ${workspace}:/etc/newman --workdir /etc/newman -t ${docker/dockerfile} run api.postman_collection.json --color off --disable-unicode"
                 }
             }
         }
