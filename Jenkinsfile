@@ -10,6 +10,13 @@ pipeline {
                 }
             }
         }
+    
+    stage('Debug') {
+    steps {
+        sh 'ls -la /var/jenkins/workspace/sandbox/sandbox-morinel-qa'
+    }
+}
+
         
         stage('Run Postman Tests') {
             steps {
